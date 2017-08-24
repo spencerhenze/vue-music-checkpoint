@@ -27,12 +27,11 @@
 
       <div class="row">
         <div class="col-xs-1"></div>
-        <div class="col-xs-10 results">
 
           <!--songs populate here -->
           <itunes class="itunes"></itunes>
 
-        </div>
+
         <div class="col-xs-1"></div>
       </div>
     </div>
@@ -72,7 +71,7 @@
 
 
 <style>
-  .my-tunes {
+  /* .my-tunes {
     display: inline-block;
     min-height: 500px;
     min-width: 50%;
@@ -84,5 +83,77 @@
     background: red;
     min-height: 500px;
     min-width: 45%;
-  }
+  } */
+
+  @import url('https://fonts.googleapis.com/css?family=Audiowide');
+
+  body{
+    background-image: url("//res.cloudinary.com/dvh7zccln/image/upload/v1503611491/dark_texture_utfpwd.jpg");
+    background-size: auto;
+    background-repeat: no-repeat;  
+    background-attachment: fixed;
+}  
+
+a{
+    color: black;
+}
+
+ .page-header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20vh;
+} 
+
+ .form-style{
+    display:flex;
+    justify-content: center;
+    margin-bottom: 10rem;
+} 
+
+ #search-bar{
+    width: 30vw;
+} 
+
+ .page-title{
+    color: white;
+    font-size: 4em;
+    text-align: center;
+    font-family: 'Audiowide', cursive;
+    text-shadow: 0 0 15px #FF0000;
+} 
+
+ .center-text{
+    text-align: center;
+} 
+
+ .album-artwork{
+    min-width: 150px;
+} 
+
+ .card-wrapper{
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FFF;
+    height: 400px;
+} 
+
+.play-pause-button{
+    margin: 2rem 0rem 2rem 0rem;
+    display:flex;
+    justify-content: center;
+    font-size: 3.5rem;
+    text-align: center;
+    color: #489FDF
+} 
+
+.play-pause-button:hover{
+    text-decoration: none;
+}
+
+a:hover, a:focus{
+    text-decoration: none;
+}
 </style>
