@@ -37,20 +37,44 @@
             }
         },
         methods: {
-            aud_play_pause: function (audioId, iconId) {
-                //debugger
-                // TODO: fix this
-                //console.log(audioId, iconId)
-                var myAudio = document.getElementById(audioId);
+            checkIcon: function (myAudio, iconId) {
                 if (myAudio.paused) {
                     $(`#${iconId}`).removeClass('fa fa-play');
                     $(`#${iconId}`).addClass('fa fa-pause');
-                    myAudio.play();
                 }
                 else {
                     $(`#${iconId}`).removeClass('fa fa-pause');
                     $(`#${iconId}`).addClass('fa fa-play');
+                }
+            },
+
+            aud_play_pause: function (audioId, iconId) {
+                //debugger
+                // TODO: fix this
+                //console.log(audioId, iconId)
+                document.addEventListener('play', function (e) {
+                    var audios = document.getElementsByTagName('audio');
+                    for (var i = 0, len = audios.length; i < len; i++) {
+                        var audio = audios[i]
+                        if (audio != e.target) {
+                            // this.checkIcon(audios[i].audioId, audios[i].iconId)
+                            audio.pause();
+                            // $(`#${iconId}`).removeClass('fa fa-pause');
+                            // $(`#${audio.iconId}`).addClass('fa fa-play');
+                        }
+                    }
+                }, true);
+
+                var myAudio = document.getElementById(audioId);
+                if (myAudio.paused) {
+                    this.checkIcon(myAudio, iconId)
+                    myAudio.play();
+
+                }
+                else {
+                    this.checkIcon(myAudio, iconId)
                     myAudio.pause();
+
                 }
             }
 
