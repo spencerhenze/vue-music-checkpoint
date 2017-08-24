@@ -16,11 +16,13 @@ var store = new vuex.Store({
   },
   actions: {
     getMusicByArtist({ commit, dispatch }, artist) {
+      console.log(artist)
       var url = '//bcw-getter.herokuapp.com/?url=';
       var url2 = 'https://itunes.apple.com/search?term=' + artist;
       var apiUrl = url + encodeURIComponent(url2);
 
-      $.get(apiUrl).then(data => {
+      $.getJSON(apiUrl).then(data => {
+        console.log(data)
         // at this point the data object from the API includes movies. We need to filter those before committing.
         var filteredList = []
         // check each item to make sure it's a song. if it is, push it to the filtered list.

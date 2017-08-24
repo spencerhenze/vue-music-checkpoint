@@ -61,7 +61,7 @@
       getMusic: function() {
         if(this.artist != ''){
           this.$store.dispatch('getMusicByArtist', this.artist)
-          artist = ''
+          this.artist = ''
         }
 
       }
