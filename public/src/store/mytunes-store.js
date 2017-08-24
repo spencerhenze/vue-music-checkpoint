@@ -49,6 +49,7 @@ var store = new vuex.Store({
         songList.forEach(song => {
           song.id = 'song' + i;
           song.iconId = 'stateicon' + i;
+          i++
         })
 
         // now commit the filtered and customized results
