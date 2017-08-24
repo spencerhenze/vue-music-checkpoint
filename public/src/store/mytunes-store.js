@@ -40,8 +40,17 @@ var store = new vuex.Store({
             preview: song.previewUrl
           }
         })
+
+        // now add the extra keys that will allow manipulation of play/pause and icon
+        var i = 0;
+
+        songList.forEach(song => {
+          song.id = 'song' + i;
+          song.iconId = 'stateicon' + i;
+        })
+
         // now commit the filtered and customized results
-        commit('setResults', filteredList)
+        commit('setResults', songList)
       })
     },
     getMyTunes({ commit, dispatch }) {
@@ -60,13 +69,13 @@ var store = new vuex.Store({
       //this should decrease the position / upvotes and downvotes on the track
     }
 
-  }, // end actions
+  } // end actions
 
-  getters: {
-    results: (state) => {
-      return state.results;
-    }
-  }
+  // getters: {
+  //   results: (state) => {
+  //     return state.results;
+  //   }
+  // }
 
 }) // end store object
 
