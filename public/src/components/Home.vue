@@ -2,8 +2,9 @@
   <div class="home">
     <!-- YOU WILL PROBABLY END UP WITH SOMETHING LIKE THIS -->
 
-    <!-- this is for the pop-over  -->
-    <MyTunes class="my-tunes"></MyTunes>
+    <!-- this is for the pop-over  -->   
+     <MyTunes class="my-tunes"></MyTunes> 
+   
     <!--  -->
 
     <!-- Begin Main content  -->

@@ -2,6 +2,8 @@ import vue from 'vue'
 import vuex from 'vuex'
 import $ from 'jquery'
 
+var ip = '//localhost:3000'
+
 vue.use(vuex)
 
 var store = new vuex.Store({
@@ -12,6 +14,9 @@ var store = new vuex.Store({
   mutations: {
     setResults(state, results) {
       state.results = results
+    },
+    updateMyTunes(state, favorites) {
+      state.myTunes = favorites
     }
   },
   actions: {
@@ -39,7 +44,8 @@ var store = new vuex.Store({
             artist: song.artistName,
             album: song.collectionName,
             price: song.collectionPrice,
-            preview: song.previewUrl
+            preview: song.previewUrl,
+            id: song.trackId
           }
         })
 
@@ -47,7 +53,7 @@ var store = new vuex.Store({
         var i = 0;
 
         songList.forEach(song => {
-          song.id = 'song' + i;
+          song.jsId = 'song' + i;
           song.iconId = 'stateicon' + i;
           i++
         })
@@ -57,12 +63,23 @@ var store = new vuex.Store({
         commit('setResults', songList)
       })
     },
+
     getMyTunes({ commit, dispatch }) {
       //this should send a get request to your server to return the list of saved tunes
+      $.get(ip + '/api/mytunes').then(favorites => {
+          commit('updateMyTunes', favorites)
+        })
     },
+
     addToMyTunes({ commit, dispatch }, track) {
       //this will post to your server adding a new track to your tunes
+      $.post(ip + '/api/mytunes', track).then(addedTrack => {
+        commit('addToMyTunes', addedTrack)
+      }).fail(err => {
+        console.error(err)
+      })
     },
+
     removeTrack({ commit, dispatch }, track) {
       //Removes track from the database with delete
     },
