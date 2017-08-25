@@ -1,6 +1,6 @@
 var express = require('express')
 var router = express.Router()
-debugger
+
 var favorites = require('../models/favorite')
 router
     // return all mytunes favorites
