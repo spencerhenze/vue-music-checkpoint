@@ -65,10 +65,11 @@ var store = new vuex.Store({
     },
 
     getMyTunes({ commit, dispatch }) {
+      console.log('hello from getMyTunes')
       //this should send a get request to your server to return the list of saved tunes
       $.get(ip + '/api/mytunes').then(favorites => {
-          commit('updateMyTunes', favorites)
-        })
+        commit('updateMyTunes', favorites)
+      })
     },
 
     addToMyTunes({ commit, dispatch }, track) {
@@ -83,11 +84,23 @@ var store = new vuex.Store({
 
     removeTrack({ commit, dispatch }, trackId) {
       //Removes track from the database with delete
-      $.delete(ip + `/api/mytunes/${trackId}`).then((res) => {
+      $.ajax({
+        url: ip + `/api/mytunes/${trackId}`,
+        method: 'DELETE',
+        contentType: 'application/json',
+      }).then(res => {
+        console.log('made it back from server')
         dispatch('getMyTunes')
-      }).fail(err => {
-        console.log(err)
       })
+        .fail(err => {
+          console.error(err)
+        })
+
+      // $.delete(ip + `/api/mytunes/${trackId}`).then((res) => {
+      //   dispatch('getMyTunes')
+      // }).fail(err => {
+      //   console.log(err)
+      // })
     },
     promoteTrack({ commit, dispatch }, track) {
       //this should increase the position / upvotes and downvotes on the track

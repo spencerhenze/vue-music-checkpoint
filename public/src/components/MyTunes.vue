@@ -2,7 +2,7 @@
     <div class="row">
         <h1>MyTunes</h1>
         <!--build items here  -->
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" v-for="song in results">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" v-for="song in myList">
             <div class="thumbnail card-wrapper">
                 <h3 class="center-text">{{song.artist}}</h3>
                 <img class="album-artwork" :src="song.albumArt" alt="art">
@@ -12,7 +12,7 @@
                     <h5><strong>Album:</strong> {{song.album}}</h5>
                     <h5><strong>Price:</strong> {{song.price}}</h5>
                     <audio :id="song.id" :src="song.preview" type="audio/mpeg"></audio>
-                    <button type="button" @click="removeTrack(song.id)">Remove</button>
+                    <button type="button" @click="removeTrack(song._id)">Remove</button>
 
                 </div>
             </div>
@@ -40,6 +40,7 @@
 
         methods: {
             removeTrack: function(songId) {
+                console.log("made it to remove track")
                 this.$store.dispatch("removeTrack", songId)
             }
         },

@@ -34,7 +34,8 @@ router
 
     .delete('/:favoriteId', (req, res, next) => {
         var favoriteId = req.params.favoriteId
-        favorites. findByIdAndRemove(favoriteId)
+        console.log(favoriteId)
+        favorites.findByIdAndRemove(favoriteId)
             .then(favorite => {
                 res.send({message: 'favorite successfully removed'})
             })
