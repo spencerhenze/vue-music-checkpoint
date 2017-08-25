@@ -89,26 +89,15 @@ router.post("/login", (req, res) => {
 router.put('/:userId', function (req, res, next) {
     var userId = req.params.userId;
     var updatedUserObject = req.body;
-
     //find the user and update the record
     Users.findById(userId)
         .then(user => {
-            bcrypt.genSalt(SALT_FACTOR, function (err, salt) {
-                //console.log("tom rocks")
-                if (err) {
-                    console.log("error from genSalt function")
-                    return next(err);
-                } else {
-                    // console.log("testing hash")
-                    bcrypt.hash(user.password, salt, function (err, hash) {
-                        console.log(user.password)
-                        user.password = hash;
-                        next();
-                    });
-                }
-            });
+            if (req.session.uid != user._id) {
+                return res.send(401, "Unauthorized")
+            }
             console.log(user)
-            user.save()
+            user.password = updatedUserObject.password
+            user.save() // this jumps over to the 'pre' method in the user model and runs the bcrypt stuff.
                 .then(user => {
                     user.password = null;
                     console.log(user)
