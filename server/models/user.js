@@ -13,6 +13,7 @@ var schema = new Schema({
 })
 
 schema.pre('save', function(next) {
+    console.log('made it to pre')
     //console.log("in pre")
     var user = this;
     if (!user.isModified('password')) {

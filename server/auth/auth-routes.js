@@ -1,5 +1,7 @@
 var router = require('express').Router();
 var Users = require('../models/user');
+var bcrypt = require('bcryptjs')
+const SALT_FACTOR = 10;
 
 
 // add a user
@@ -21,14 +23,23 @@ router.post("/register", (req, res) => {
     });
 });
 
+// to log out
+router.delete('/logout', (req, res) => {
+    console.log(req)
+    req.session.destroy();
+    res.send({
+        message: "goodbye"
+    });
+});
 // delete a user
 router.delete('/:userId', (req, res, next) => {
+    console.log('you are hitting delete user')
     var userId = req.params.userId;
-    
+
     //find the user and blow them away!
-    User.findByIdAndRemove(userId)
+    Users.findByIdAndRemove(userId)
         .then(user => {
-            res.send({ message: `So long user: ${userId}.`})
+            res.send({ message: `So long user: ${userId}.` })
         })
         .catch(next);
 })
@@ -44,7 +55,9 @@ router.post("/login", (req, res) => {
             return res.send({ error: `Invalid login or password: couldn't find user` })
         }
         user.validatePassword(req.body.password)
+
             .then((valid) => {
+                console.log('you made it to then in validate password')
                 if (!valid) {
                     return res.send({ error: 'Invalid login or password: incorrect password' });
                 }
@@ -61,9 +74,9 @@ router.post("/login", (req, res) => {
                     data: user
                 });
             }).catch(err => {
+                console.log('your validate function is failing')
                 res.send({ error: err || 'Invalid login or password: validate password request failed' });
             })
-        // console.log(valid);
 
     }).catch(err => {
         res.send({ error: err || 'Invalid login or password: couldn`t find user catch' }); //if false alarm return the regular thing.
@@ -78,20 +91,34 @@ router.put('/:userId', function (req, res, next) {
     var updatedUserObject = req.body;
 
     //find the user and update the record
-    User.findByIdAndUpdate(userId, updatedUserObject)
+    Users.findById(userId)
         .then(user => {
-            res.send(req.body);
+            bcrypt.genSalt(SALT_FACTOR, function (err, salt) {
+                //console.log("tom rocks")
+                if (err) {
+                    console.log("error from genSalt function")
+                    return next(err);
+                } else {
+                    // console.log("testing hash")
+                    bcrypt.hash(user.password, salt, function (err, hash) {
+                        console.log(user.password)
+                        user.password = hash;
+                        next();
+                    });
+                }
+            });
+            console.log(user)
+            user.save()
+                .then(user => {
+                    user.password = null;
+                    console.log(user)
+                    res.send(user);
+                })
         })
         .catch(next);
 })
 
-// to log out
-router.delete('/logout', (req, res) => {
-    req.session.destroy();
-    res.send({
-        message: "goodbye"
-    });
-});
+
 
 
 module.exports = router;
