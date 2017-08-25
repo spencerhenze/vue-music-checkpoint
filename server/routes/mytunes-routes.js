@@ -14,6 +14,7 @@ router
 
     // add a favoite
     .post('/', (req, res, next) => {
+        // req.body.userId = 0
         favorites.create(req.body)
             .then(favorite => {
                 res.send({message: 'favorite added successfully'})

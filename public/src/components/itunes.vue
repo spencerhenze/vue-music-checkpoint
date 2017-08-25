@@ -79,7 +79,7 @@
                 }
             },
             addToMyTunes: function(song) {
-                this.$store.dispatch("addToMyTunes", songId)
+                this.$store.dispatch("addToMyTunes", song)
             }
 
         }

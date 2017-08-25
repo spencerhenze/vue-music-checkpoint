@@ -40,7 +40,7 @@
 
         methods: {
             removeTrack: function(songId) {
-                this.$store.dispatch("removeTrack")
+                this.$store.dispatch("removeTrack", songId)
             }
         },
 

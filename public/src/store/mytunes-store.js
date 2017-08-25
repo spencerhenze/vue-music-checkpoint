@@ -74,14 +74,20 @@ var store = new vuex.Store({
     addToMyTunes({ commit, dispatch }, track) {
       //this will post to your server adding a new track to your tunes
       $.post(ip + '/api/mytunes', track).then(addedTrack => {
-        commit('addToMyTunes', addedTrack)
+        console.log(track)
+        dispatch('getMyTunes')
       }).fail(err => {
         console.error(err)
       })
     },
 
-    removeTrack({ commit, dispatch }, track) {
+    removeTrack({ commit, dispatch }, trackId) {
       //Removes track from the database with delete
+      $.delete(ip + `/api/mytunes/${trackId}`).then((res) => {
+        dispatch('getMyTunes')
+      }).fail(err => {
+        console.log(err)
+      })
     },
     promoteTrack({ commit, dispatch }, track) {
       //this should increase the position / upvotes and downvotes on the track

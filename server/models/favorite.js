@@ -13,7 +13,7 @@ var favoriteSchema = new mongoose.Schema({
     listPosition: {type: Number, required: true, default: 0}, // this keeps track of the list position
 
     // RELATIONSHIPS
-    userId: {type: ObjectId, ref:'User', required: true},
+    // userId: {type: ObjectId, ref:'User', required: true},
     // listId: {type: ObjectId, ref:'Playlist', required: true},
 })
 
