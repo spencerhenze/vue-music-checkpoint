@@ -53,6 +53,7 @@ var store = new vuex.Store({
         })
 
         // now commit the filtered and customized results
+        console.log(songList)
         commit('setResults', songList)
       })
     },

@@ -12,7 +12,15 @@ server.use(cors())
 server.use(sessions);
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: true}))
-
-
-
 server.use(express.static(__dirname + '/../public'));
+
+// ROUTES
+
+var authRouter = require('./auth/auth-routes');
+server.use('/', authRouter);
+
+var myTunesRouter = require('./routes/mytunes-routes');
+server.use('/api/mytunes/', myTunesRouter);
+
+
+
