@@ -9,7 +9,8 @@ vue.use(vuex)
 var store = new vuex.Store({
   state: {
     myTunes: [],
-    results: []
+    results: [],
+    showMyTunes: true
   },
   mutations: {
     setResults(state, results) {
@@ -17,9 +18,21 @@ var store = new vuex.Store({
     },
     updateMyTunes(state, favorites) {
       state.myTunes = favorites
+    },
+    toggleShowMyTunes(state, payload) {
+      if (state.showMyTunes == true) {
+        state.showMyTunes = false;
+      }
+      else if (state.showMyTunes == false) {
+        state.showMyTunes = true;
+      }
     }
   },
   actions: {
+    toggleShowMyTunes({ commit, dispatch }) {
+      commit('toggleShowMyTunes')
+    },
+
     getMusicByArtist({ commit, dispatch }, artist) {
       console.log(artist)
       var url = '//bcw-getter.herokuapp.com/?url=';

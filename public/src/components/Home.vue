@@ -2,9 +2,8 @@
   <div class="home">
     <!-- YOU WILL PROBABLY END UP WITH SOMETHING LIKE THIS -->
 
-    <!-- this is for the pop-over  -->   
-     <MyTunes class="my-tunes"></MyTunes> 
-   
+    <!-- this is for the pop-over  -->
+
     <!--  -->
 
     <!-- Begin Main content  -->
@@ -21,26 +20,29 @@
             <input id="search-bar" type="text" class="form-control" v-model="artist" placeholder="Artist Name" />
             <button type="submit" class="btn btn-primary" id="get-music-button">Get Music</button>
           </div>
+          <button type="button" class="btn btn-danger" id="show-myTunes-button" @click="toggleShowMyTunes">Show MyTunes</button>
         </form>
+        
       </div>
     </div>
     <div id="songs">
 
       <div class="row">
-        <div class="col-xs-1"></div>
+        <!-- <div class="col-xs-1"></div> -->
 
-          <!--songs populate here -->
-          <itunes class="itunes"></itunes>
+        <!--songs populate here -->
+        <itunes class="itunes"></itunes>
 
+        <MyTunes class="my-tunes"></MyTunes>
 
-        <div class="col-xs-1"></div>
+        <!-- <div class="col-xs-1"></div> -->
       </div>
     </div>
     <!--end of main content  -->
 
 
   </div>
-  </template>
+</template>
 
 <script>
   import MyTunes from './MyTunes'
@@ -50,7 +52,7 @@
     name: 'home',
     data() {
       return {
-        artist: ''
+        artist: '',
       }
     },
     components: {
@@ -58,12 +60,15 @@
       MyTunes
     },
     methods: {
-      getMusic: function() {
-        if(this.artist != ''){
+      getMusic: function () {
+        if (this.artist != '') {
           this.$store.dispatch('getMusicByArtist', this.artist)
           this.artist = ''
         }
 
+      },
+      toggleShowMyTunes: function () {
+        this.$store.dispatch('toggleShowMyTunes')
       }
     }
   }
@@ -71,7 +76,7 @@
 </script>
 
 
-<style>
+<style scoped>
   /* .my-tunes {
     display: inline-block;
     min-height: 500px;
@@ -88,73 +93,78 @@
 
   @import url('https://fonts.googleapis.com/css?family=Audiowide');
 
-  body{
+  body {
     background-image: url("//res.cloudinary.com/dvh7zccln/image/upload/v1503611491/dark_texture_utfpwd.jpg");
     background-size: auto;
-    background-repeat: no-repeat;  
+    background-repeat: no-repeat;
     background-attachment: fixed;
-}  
+  }
 
-a{
+  a {
     color: black;
-}
+  }
 
- .page-header{
+  .page-header {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 20vh;
-} 
+  }
 
- .form-style{
-    display:flex;
+  .form-style {
+    display: flex;
     justify-content: center;
     margin-bottom: 10rem;
-} 
+  }
 
- #search-bar{
+  #search-bar {
     width: 30vw;
-} 
+  }
 
- .page-title{
+  .page-title {
     color: white;
     font-size: 4em;
     text-align: center;
     font-family: 'Audiowide', cursive;
     text-shadow: 0 0 15px #FF0000;
-} 
+  }
 
- .center-text{
+  .center-text {
     text-align: center;
-} 
+  }
 
- .album-artwork{
+  .album-artwork {
     min-width: 150px;
-} 
+  }
 
- .card-wrapper{
-    
+  .card-wrapper {
+
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: #FFF;
     height: 400px;
-} 
+  }
 
-.play-pause-button{
+  .play-pause-button {
     margin: 2rem 0rem 2rem 0rem;
-    display:flex;
+    display: flex;
     justify-content: center;
     font-size: 3.5rem;
     text-align: center;
     color: #489FDF
-} 
+  }
 
-.play-pause-button:hover{
+  .play-pause-button:hover {
     text-decoration: none;
-}
+  }
 
-a:hover, a:focus{
+  a:hover,
+  a:focus {
     text-decoration: none;
-}
+  }
+
+  #show-myTunes-button {
+    margin-left:5rem;
+  }
 </style>
