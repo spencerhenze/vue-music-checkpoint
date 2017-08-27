@@ -1,7 +1,7 @@
 <template>
-    <div class="myTunes-wrapper col-xs-2">
+    <div class="myTunes-wrapper col-xs-5" v-if="showMyTunes==true">
 
-        <div class="row" v-if="showMyTunes==true">
+        <div class="row">
             <div class="col-xs-12">
                 <h1>MyTunes</h1>
             </div>
@@ -10,7 +10,7 @@
         <div class="row">
 
             <!--build items here  -->
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" v-for="song in myList">
+            <div class="col-xs-12" v-for="song in myList">
                 <div class="thumbnail card-wrapper">
                     <h3 class="center-text">{{song.artist}}</h3>
                     <img class="album-artwork" :src="song.albumArt" alt="art">
@@ -21,6 +21,9 @@
                         <h5><strong>Price:</strong> {{song.price}}</h5>
                         <audio :id="song.id" :src="song.preview" type="audio/mpeg"></audio>
                         <button type="button" @click="removeTrack(song._id)">Remove</button>
+                        <div class="btn btn-group" role="group" aria-label="promote/demote">
+                            <button type="button" class="btn btn-success" @click="promoteTrack(song.id)"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></button>
+                        </div>     
 
                     </div>
                 </div>
@@ -67,6 +70,7 @@
 
 
 <style>
+
     body {
         background-image: url("//res.cloudinary.com/dvh7zccln/image/upload/v1503611491/dark_texture_utfpwd.jpg");
         background-size: auto;

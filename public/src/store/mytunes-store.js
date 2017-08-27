@@ -26,7 +26,8 @@ var store = new vuex.Store({
       else if (state.showMyTunes == false) {
         state.showMyTunes = true;
       }
-    }
+    },
+
   },
   actions: {
     toggleShowMyTunes({ commit, dispatch }) {
@@ -115,8 +116,57 @@ var store = new vuex.Store({
       //   console.log(err)
       // })
     },
-    promoteTrack({ commit, dispatch }, track) {
+    promoteTrack({ commit, dispatch }, trackId) {
       //this should increase the position / upvotes and downvotes on the track
+      var updatedTrack = {}
+      var updatedPrevious = {}
+
+      // get the list
+      $.get(ip + '/api/mytunes').then(favorites => {
+        for (var i = 0; i < favorites.length; i++) {
+          var song = favorites[i];
+          var previousSong = favorites[i - 1];
+
+          // when found, check to make sure the position is at least 2
+          if (song.id == trackId) {
+            if (song.listPosition > 1) {
+              // decrement the position number of the current song, and increment the position number of the previous song.
+              song.listPosition--;
+              // assign the updated song object to the new variables
+              updatedTrack = song;
+              previousSong.listPosition++;
+              updatedPrevious = previousSong;
+            }
+          }
+        }// end of for loop
+      }).fail(err => {console.error(err)})
+
+      // update the current song
+      $.ajax({
+        url: ip + `/api/mytunes/${trackId}`,
+        method: 'PUT',
+        contentType: 'application/json',
+      }).then(res => {
+        console.log('song updated successfully')
+        // dispatch('getMyTunes')
+      }).fail(err => {console.error(err)})
+
+      // update the previous song
+      $.ajax({
+        url: ip + `/api/mytunes/${updatedPrevious.id}`,
+        method: 'PUT',
+        contentType: 'application/json',
+      }).then(res => {
+        console.log('previous song updated successfully')
+        dispatch('getMyTunes')
+      }).fail(err => {console.error(err)})
+
+
+
+      // apply the logic and build the two new objects
+      // make two put requests to update each song object
+      // call getMyTunes to update the store
+
     },
     demoteTrack({ commit, dispatch }, track) {
       //this should decrease the position / upvotes and downvotes on the track
