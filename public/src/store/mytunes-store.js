@@ -18,6 +18,7 @@ var store = new vuex.Store({
     },
     updateMyTunes(state, favorites) {
       state.myTunes = favorites
+      console.log(state.myTunes)
     },
     toggleShowMyTunes(state, payload) {
       if (state.showMyTunes == true) {
@@ -82,18 +83,26 @@ var store = new vuex.Store({
       console.log('hello from getMyTunes')
       //this should send a get request to your server to return the list of saved tunes
       $.get(ip + '/api/mytunes').then(favorites => {
+        // favorites should come back sorted
         commit('updateMyTunes', favorites)
       })
     },
 
     addToMyTunes({ commit, dispatch }, track) {
       //this will post to your server adding a new track to your tunes
-      $.post(ip + '/api/mytunes', track).then(addedTrack => {
-        console.log(track)
-        dispatch('getMyTunes')
-      }).fail(err => {
-        console.error(err)
-      })
+      // get the list and adjust the listPosition property
+      $.get(ip + '/api/mytunes').then(favorites => {
+        track.listPosition = (favorites.length + 1);
+
+        // Then submit the new song.
+        $.post(ip + '/api/mytunes', track).then(addedTrack => {
+          console.log(track)
+          dispatch('getMyTunes')
+        }).fail(err => { console.error(err) })
+
+
+      }).fail(err => { console.error(err) })
+
     },
 
     removeTrack({ commit, dispatch }, trackId) {
@@ -129,43 +138,47 @@ var store = new vuex.Store({
 
           // when found, check to make sure the position is at least 2
           if (song.id == trackId) {
+            console.log(`current song's position: ${song.listPosition}`)
             if (song.listPosition > 1) {
               // decrement the position number of the current song, and increment the position number of the previous song.
               song.listPosition--;
-              // assign the updated song object to the new variables
+              console.log(`current song's new position: ${song.listPosition}`)
+
+              // assign the updated song objects to the new variables
               updatedTrack = song;
+
               previousSong.listPosition++;
+              console.log(`previous song's new position: ${previousSong.listPosition}`)
               updatedPrevious = previousSong;
+            }
+            else {
+              return console.log("song is already in the top position")
             }
           }
         }// end of for loop
-      }).fail(err => {console.error(err)})
+        // update the current song
+        $.ajax({
+          url: ip + `/api/mytunes/${updatedTrack._id}`,
+          method: 'PUT',
+          contentType: 'application/json',
+          data: JSON.stringify(updatedTrack)
+        }).then(res => {
+          console.log('song updated successfully')
+          // dispatch('getMyTunes')
+        }).fail(err => { console.error(err) })
 
-      // update the current song
-      $.ajax({
-        url: ip + `/api/mytunes/${trackId}`,
-        method: 'PUT',
-        contentType: 'application/json',
-      }).then(res => {
-        console.log('song updated successfully')
-        // dispatch('getMyTunes')
-      }).fail(err => {console.error(err)})
+        // update the previous song
+        $.ajax({
+          url: ip + `/api/mytunes/${updatedPrevious._id}`,
+          method: 'PUT',
+          contentType: 'application/json',
+          data: JSON.stringify(updatedPrevious)
+        }).then(res => {
+          console.log('previous song updated successfully')
+          dispatch('getMyTunes')
+        }).fail(err => { console.error(err) })
 
-      // update the previous song
-      $.ajax({
-        url: ip + `/api/mytunes/${updatedPrevious.id}`,
-        method: 'PUT',
-        contentType: 'application/json',
-      }).then(res => {
-        console.log('previous song updated successfully')
-        dispatch('getMyTunes')
-      }).fail(err => {console.error(err)})
-
-
-
-      // apply the logic and build the two new objects
-      // make two put requests to update each song object
-      // call getMyTunes to update the store
+      }).fail(err => { console.error(err) })
 
     },
     demoteTrack({ commit, dispatch }, track) {

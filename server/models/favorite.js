@@ -10,7 +10,7 @@ var favoriteSchema = new mongoose.Schema({
     preview: {type: String, required: true},
     iconId: {type: String, required: true},
     id: {type: String, required: true},
-    listPosition: {type: Number, required: true, default: 0}, // this keeps track of the list position
+    listPosition: {type: Number, required: true, default: 1}, // this keeps track of the list position
 
     // RELATIONSHIPS
     // userId: {type: ObjectId, ref:'User', required: true},

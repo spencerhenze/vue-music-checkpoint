@@ -6,11 +6,13 @@ router
     // return all mytunes favorites
     .get('/', (req, res, next) => {
         favorites.find({})
-            .then(favorites => {
+            .sort({ listPosition: 1 })
+            .exec((err, favorites) => {
                 res.send(favorites)
-            })
-            .catch(next)
+            }).catch(next)
     })
+    
+
 
     // add a favoite
     .post('/', (req, res, next) => {
@@ -25,11 +27,12 @@ router
     // update the favorite (mostly for sort order adjustments)
     .put('/:favoriteId', (req, res, next) => {
         var favoriteId = req.params.favoriteId
+
         favorites.findByIdAndUpdate(favoriteId, req.body)
             .then(favorite => {
+                console.log("found and updated: " + favorite)
                 res.send({message: 'sort order updated successfully'})
-            })
-            .catch(next)
+            }).catch(next)
     })
 
     .delete('/:favoriteId', (req, res, next) => {
@@ -57,5 +60,6 @@ router.use('/', (err, req, res, next) => {
         })
     }
 })
+    
 
 module.exports = router;

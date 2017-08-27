@@ -23,6 +23,8 @@
                         <button type="button" @click="removeTrack(song._id)">Remove</button>
                         <div class="btn btn-group" role="group" aria-label="promote/demote">
                             <button type="button" class="btn btn-success" @click="promoteTrack(song.id)"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></button>
+                            <!-- <button type="button" class="btn btn-success" @click="promoteTrack(song.id)"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></button> -->
+                            
                         </div>     
 
                     </div>
@@ -57,6 +59,9 @@
             removeTrack: function (songId) {
                 console.log("made it to remove track")
                 this.$store.dispatch("removeTrack", songId)
+            },
+            promoteTrack: function(trackId){
+                this.$store.dispatch("promoteTrack", trackId)
             }
         },
 
