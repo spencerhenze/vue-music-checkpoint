@@ -1,11 +1,6 @@
 <template>
   <div class="home">
-    <!-- YOU WILL PROBABLY END UP WITH SOMETHING LIKE THIS -->
-
-    <!-- this is for the pop-over  -->
-
-    <!--  -->
-
+    
     <!-- Begin Main content  -->
     <div class="row">
       <div class="col-xs-12 page-header">

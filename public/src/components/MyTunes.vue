@@ -1,5 +1,5 @@
 <template>
-    <div class="myTunes-wrapper col-xs-5" v-if="showMyTunes==true">
+    <div class="myTunes-wrapper col-xs-12 col-sm-5" v-if="showMyTunes==true">
 
         <div class="row">
             <div class="col-xs-12">

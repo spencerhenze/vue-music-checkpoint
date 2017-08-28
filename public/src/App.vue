@@ -1,6 +1,11 @@
 <template>
   <div id="app" class="container-fluid">
-    <home></home>
+    <!-- <ul>
+      <router-link :to"{name: 'Home'}">Home</router-link>
+      <router-link :to"{name: 'MyTunes'}">MyTunes</router-link>
+        
+    </ul> -->
+     <home></home> 
   </div>
 </template>
 
