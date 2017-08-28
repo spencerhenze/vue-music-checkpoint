@@ -7,7 +7,7 @@ var database = require('./config/dbconfig')
 
 // SERVER INSTANCE
 var server = express()
-var port = 3000;
+var port = process.env.PORT || 3000;
 server.listen(port, () => {
     console.log('Listening on port: ' + port)
 })
