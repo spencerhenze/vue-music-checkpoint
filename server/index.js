@@ -8,6 +8,8 @@ var database = require('./config/dbconfig')
 // SERVER INSTANCE
 var server = express()
 var port = process.env.PORT || 3000;
+server.use(express.static(__dirname + '/../public/dist'));
+
 server.listen(port, () => {
     console.log('Listening on port: ' + port)
 })
@@ -17,7 +19,6 @@ server.use(cors())
 server.use(sessions);
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }))
-server.use(express.static(__dirname + '/../public'));
 
 // ROUTES
 
