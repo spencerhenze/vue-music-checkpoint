@@ -48,16 +48,15 @@ var store = new vuex.Store({
         var filteredList = []
         // check each item to make sure it's a song. if it is, push it to the filtered list.
         data.results.forEach(function (item) {
-          var removeHttp = function (url) {
-            var charArray = url.split('');
-            for (var i = 0; i < 5; i++) {
-              charArray.shift();
-            }
-            return charArray.join('');
-          }
+          // var removeHttp = function (url) {
+          //   var charArray = url.split('');
+          //   for (var i = 0; i < 5; i++) {
+          //     charArray.shift();
+          //   }
+          //   return charArray.join('');
+          // }
           if (item.kind == 'song') {
 
-            item.artworkUrl100 = removeHttp(item.artworkUrl100)
             filteredList.push(item)
           }
         })
