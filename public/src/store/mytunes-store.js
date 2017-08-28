@@ -164,7 +164,6 @@ var store = new vuex.Store({
           data: JSON.stringify(updatedTrack)
         }).then(res => {
           console.log('song updated successfully')
-          // dispatch('getMyTunes')
         }).fail(err => { console.error(err) })
 
         // update the previous song
@@ -181,17 +180,64 @@ var store = new vuex.Store({
       }).fail(err => { console.error(err) })
 
     },
-    demoteTrack({ commit, dispatch }, track) {
+    demoteTrack({ commit, dispatch }, trackId) {
       //this should decrease the position / upvotes and downvotes on the track
+      var updatedTrack = {}
+      var updatedNext = {}
+
+      // get the list
+      $.get(ip + '/api/mytunes').then(favorites => {
+        for (var i = 0; i < favorites.length; i++) {
+          var song = favorites[i];
+          var nextSong = favorites[i + 1];
+
+          // when found, check to make sure the position is at least 2
+          if (song.id == trackId) {
+            console.log(`current song's position: ${song.listPosition}`)
+            if (song.listPosition < favorites.length) {
+              // decrement the position number of the current song, and increment the position number of the previous song.
+              song.listPosition++;
+              console.log(`current song's new position: ${song.listPosition}`)
+
+              // assign the updated song objects to the new variables
+              updatedTrack = song;
+
+              nextSong.listPosition--;
+              console.log(`next song's new position: ${nextSong.listPosition}`)
+              updatedNext = nextSong;
+            }
+            else {
+              return console.log("song is already in the last position")
+            }
+          }
+        }// end of for loop
+        // update the current song
+        $.ajax({
+          url: ip + `/api/mytunes/${updatedTrack._id}`,
+          method: 'PUT',
+          contentType: 'application/json',
+          data: JSON.stringify(updatedTrack)
+        }).then(res => {
+          console.log('song updated successfully')
+        }).fail(err => { console.error(err) })
+
+        // update the previous song
+        $.ajax({
+          url: ip + `/api/mytunes/${updatedNext._id}`,
+          method: 'PUT',
+          contentType: 'application/json',
+          data: JSON.stringify(updatedNext)
+        }).then(res => {
+          console.log('next song updated successfully')
+          dispatch('getMyTunes')
+        }).fail(err => { console.error(err) })
+
+      }).fail(err => { console.error(err) })
+
     }
 
   } // end actions
 
-  // getters: {
-  //   results: (state) => {
-  //     return state.results;
-  //   }
-  // }
 
 }) // end store object
 
