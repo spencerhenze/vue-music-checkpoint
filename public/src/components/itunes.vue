@@ -1,6 +1,6 @@
 <template>
     <!-- if myTunes is showing, this main column needs to be 6 wide -->
-    <div class="col-xs-offset-1 col-xs-6  results" v-if="showMyTunes == true">
+    <div class="col-xs-offset-1 col-xs-10 col-sm-6  results" v-if="showMyTunes == true">
 
         <div class="row">
 

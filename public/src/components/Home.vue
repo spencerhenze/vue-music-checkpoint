@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    
+
     <!-- Begin Main content  -->
     <div class="row">
       <div class="col-xs-12 page-header">
@@ -26,9 +26,12 @@
       <!-- <div class="col-xs-1"></div> -->
 
       <!--songs populate here -->
-      <itunes class="itunes"></itunes>
+      <div class="tunes-wrapper">
+        <itunes class="itunes"></itunes>
+        <MyTunes class="my-tunes"></MyTunes>
+      </div>
 
-      <MyTunes class="my-tunes"></MyTunes>
+  
 
       <!-- <div class="col-xs-1"></div> -->
     </div>
@@ -52,6 +55,11 @@
     components: {
       Itunes,
       MyTunes
+    },
+    computed: {
+      showMyTunes() {
+        return this.$store.state.showMyTunes;
+      }
     },
     methods: {
       getMusic: function () {
@@ -126,6 +134,8 @@
   .center-text {
     text-align: center;
   }
+
+  .tunes-wrapper {}
 
   .album-artwork {
     min-width: 150px;

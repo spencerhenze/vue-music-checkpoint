@@ -179,7 +179,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        height: 400px;
+        justify-content: space-evenly;
+        height: 500px;
     }
 
     .myTunes-title {
