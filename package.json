@@ -1,0 +1,19 @@
+{
+  "name": "vue-music-checkpoint",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spencerhenze/vue-music-checkpoint.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/spencerhenze/vue-music-checkpoint/issues"
+  },
+  "homepage": "https://github.com/spencerhenze/vue-music-checkpoint#readme"
+}
