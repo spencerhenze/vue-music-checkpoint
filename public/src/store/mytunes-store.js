@@ -107,134 +107,157 @@ var store = new vuex.Store({
 
     removeTrack({ commit, dispatch }, trackId) {
       //Removes track from the database with delete
-      $.ajax({
-        url: ip + `/api/mytunes/${trackId}`,
-        method: 'DELETE',
-        contentType: 'application/json',
-      }).then(res => {
-        console.log('made it back from server')
-        dispatch('getMyTunes')
-      })
-        .fail(err => {
-          console.error(err)
-        })
 
-      // $.delete(ip + `/api/mytunes/${trackId}`).then((res) => {
-      //   dispatch('getMyTunes')
-      // }).fail(err => {
-      //   console.log(err)
-      // })
-    },
-    promoteTrack({ commit, dispatch }, trackId) {
-      //this should increase the position / upvotes and downvotes on the track
-      var updatedTrack = {}
-      var updatedPrevious = {}
-
-      // get the list
-      $.get(ip + '/api/mytunes').then(favorites => {
-        for (var i = 0; i < favorites.length; i++) {
-          var song = favorites[i];
-          var previousSong = favorites[i - 1];
-
-          // when found, check to make sure the position is at least 2
-          if (song.id == trackId) {
-            console.log(`current song's position: ${song.listPosition}`)
-            if (song.listPosition > 1) {
-              // decrement the position number of the current song, and increment the position number of the previous song.
-              song.listPosition--;
-              console.log(`current song's new position: ${song.listPosition}`)
-
-              // assign the updated song objects to the new variables
-              updatedTrack = song;
-
-              previousSong.listPosition++;
-              console.log(`previous song's new position: ${previousSong.listPosition}`)
-              updatedPrevious = previousSong;
-            }
-            else {
-              return console.log("song is already in the top position")
-            }
-          }
-        }// end of for loop
-        // update the current song
-        $.ajax({
-          url: ip + `/api/mytunes/${updatedTrack._id}`,
-          method: 'PUT',
-          contentType: 'application/json',
-          data: JSON.stringify(updatedTrack)
-        }).then(res => {
-          console.log('song updated successfully')
-        }).fail(err => { console.error(err) })
-
-        // update the previous song
-        $.ajax({
-          url: ip + `/api/mytunes/${updatedPrevious._id}`,
-          method: 'PUT',
-          contentType: 'application/json',
-          data: JSON.stringify(updatedPrevious)
-        }).then(res => {
-          console.log('previous song updated successfully')
-          dispatch('getMyTunes')
-        }).fail(err => { console.error(err) })
-
-      }).fail(err => { console.error(err) })
-
-    },
-    demoteTrack({ commit, dispatch }, trackId) {
-      //this should decrease the position / upvotes and downvotes on the track
-      var updatedTrack = {}
-      var updatedNext = {}
-
-      // get the list
       $.get(ip + '/api/mytunes').then(favorites => {
         for (var i = 0; i < favorites.length; i++) {
           var song = favorites[i];
           var nextSong = favorites[i + 1];
 
-          // when found, check to make sure the position is at least 2
-          if (song.id == trackId) {
-            console.log(`current song's position: ${song.listPosition}`)
-            if (song.listPosition < favorites.length) {
-              // decrement the position number of the current song, and increment the position number of the previous song.
-              song.listPosition++;
-              console.log(`current song's new position: ${song.listPosition}`)
+          // when found, update the rest of the items
+          if (song._id == trackId) {
+            if (nextSong) {
+              for (var j = i; j < favorites.length; j++) {
+                var followingSong = favorites[j]
+                followingSong.listPosition--;
+                $.ajax({
+                  url: ip + `/api/mytunes/${followingSong._id}`,
+                  method: 'PUT',
+                  contentType: 'application/json',
+                  data: JSON.stringify(followingSong)
+                }).then(res => {
+                  console.log("")
+                }).fail(err => { console.error(err) })
 
-              // assign the updated song objects to the new variables
-              updatedTrack = song;
 
-              nextSong.listPosition--;
-              console.log(`next song's new position: ${nextSong.listPosition}`)
-              updatedNext = nextSong;
+              } // end of internal for loop
             }
-            else {
-              return console.log("song is already in the last position")
-            }
+
+            $.ajax({
+              url: ip + `/api/mytunes/${trackId}`,
+              method: 'DELETE',
+              contentType: 'application/json',
+            }).then(res => {
+              dispatch('getMyTunes')
+              return
+            }).fail(err => {
+                console.error(err)
+              })
+
           }
-        }// end of for loop
-        // update the current song
-        $.ajax({
-          url: ip + `/api/mytunes/${updatedTrack._id}`,
-          method: 'PUT',
-          contentType: 'application/json',
-          data: JSON.stringify(updatedTrack)
-        }).then(res => {
-          console.log('song updated successfully')
-        }).fail(err => { console.error(err) })
-
-        // update the previous song
-        $.ajax({
-          url: ip + `/api/mytunes/${updatedNext._id}`,
-          method: 'PUT',
-          contentType: 'application/json',
-          data: JSON.stringify(updatedNext)
-        }).then(res => {
-          console.log('next song updated successfully')
-          dispatch('getMyTunes')
-        }).fail(err => { console.error(err) })
-
+        }
       }).fail(err => { console.error(err) })
+    },
 
-    }
+promoteTrack({ commit, dispatch }, trackId) {
+  //this should increase the position / upvotes and downvotes on the track
+  var updatedTrack = {}
+  var updatedPrevious = {}
+
+  // get the list
+  $.get(ip + '/api/mytunes').then(favorites => {
+    for (var i = 0; i < favorites.length; i++) {
+      var song = favorites[i];
+      var previousSong = favorites[i - 1];
+
+      // when found, check to make sure the position is at least 2
+      if (song.id == trackId) {
+        console.log(`current song's position: ${song.listPosition}`)
+        if (song.listPosition > 1) {
+          // decrement the position number of the current song, and increment the position number of the previous song.
+          song.listPosition--;
+          console.log(`current song's new position: ${song.listPosition}`)
+
+          // assign the updated song objects to the new variables
+          updatedTrack = song;
+
+          previousSong.listPosition++;
+          console.log(`previous song's new position: ${previousSong.listPosition}`)
+          updatedPrevious = previousSong;
+        }
+        else {
+          return console.log("song is already in the top position")
+        }
+      }
+    }// end of for loop
+    // update the current song
+    $.ajax({
+      url: ip + `/api/mytunes/${updatedTrack._id}`,
+      method: 'PUT',
+      contentType: 'application/json',
+      data: JSON.stringify(updatedTrack)
+    }).then(res => {
+      console.log('song updated successfully')
+    }).fail(err => { console.error(err) })
+
+    // update the previous song
+    $.ajax({
+      url: ip + `/api/mytunes/${updatedPrevious._id}`,
+      method: 'PUT',
+      contentType: 'application/json',
+      data: JSON.stringify(updatedPrevious)
+    }).then(res => {
+      console.log('previous song updated successfully')
+      dispatch('getMyTunes')
+    }).fail(err => { console.error(err) })
+
+  }).fail(err => { console.error(err) })
+
+},
+demoteTrack({ commit, dispatch }, trackId) {
+  //this should decrease the position / upvotes and downvotes on the track
+  var updatedTrack = {}
+  var updatedNext = {}
+
+  // get the list
+  $.get(ip + '/api/mytunes').then(favorites => {
+    for (var i = 0; i < favorites.length; i++) {
+      var song = favorites[i];
+      var nextSong = favorites[i + 1];
+
+      // when found, check to make sure the position is at least 2
+      if (song.id == trackId) {
+        console.log(`current song's position: ${song.listPosition}`)
+        if (song.listPosition < favorites.length) {
+          // decrement the position number of the current song, and increment the position number of the previous song.
+          song.listPosition++;
+          console.log(`current song's new position: ${song.listPosition}`)
+
+          // assign the updated song objects to the new variables
+          updatedTrack = song;
+
+          nextSong.listPosition--;
+          console.log(`next song's new position: ${nextSong.listPosition}`)
+          updatedNext = nextSong;
+        }
+        else {
+          return console.log("song is already in the last position")
+        }
+      }
+    }// end of for loop
+    // update the current song
+    $.ajax({
+      url: ip + `/api/mytunes/${updatedTrack._id}`,
+      method: 'PUT',
+      contentType: 'application/json',
+      data: JSON.stringify(updatedTrack)
+    }).then(res => {
+      console.log('song updated successfully')
+    }).fail(err => { console.error(err) })
+
+    // update the previous song
+    $.ajax({
+      url: ip + `/api/mytunes/${updatedNext._id}`,
+      method: 'PUT',
+      contentType: 'application/json',
+      data: JSON.stringify(updatedNext)
+    }).then(res => {
+      console.log('next song updated successfully')
+      dispatch('getMyTunes')
+    }).fail(err => { console.error(err) })
+
+  }).fail(err => { console.error(err) })
+
+}
 
   } // end actions
 

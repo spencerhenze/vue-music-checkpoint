@@ -12,6 +12,7 @@
         <h1 class="page-title">Discover Your Music</h1>
       </div>
     </div>
+
     <div class="row">
       <div class="col-xs-12">
         <form class="form-inline form-style" @submit.prevent="getMusic">
@@ -22,21 +23,19 @@
           </div>
           <button type="button" class="btn btn-danger" id="show-myTunes-button" @click="toggleShowMyTunes">Show MyTunes</button>
         </form>
-        
       </div>
     </div>
-    <div id="songs">
 
-      <div class="row">
-        <!-- <div class="col-xs-1"></div> -->
+    <div class="row" id="songs">
 
-        <!--songs populate here -->
-        <itunes class="itunes"></itunes>
+      <!-- <div class="col-xs-1"></div> -->
 
-        <MyTunes class="my-tunes"></MyTunes>
+      <!--songs populate here -->
+      <itunes class="itunes"></itunes>
 
-        <!-- <div class="col-xs-1"></div> -->
-      </div>
+      <MyTunes class="my-tunes"></MyTunes>
+
+      <!-- <div class="col-xs-1"></div> -->
     </div>
     <!--end of main content  -->
 
@@ -143,7 +142,7 @@
     flex-direction: column;
     align-items: center;
     background-color: #FFF;
-    height: 400px;
+    height: 430px;
   }
 
   .play-pause-button {
@@ -165,6 +164,6 @@
   }
 
   #show-myTunes-button {
-    margin-left:5rem;
+    margin-left: 5rem;
   }
 </style>

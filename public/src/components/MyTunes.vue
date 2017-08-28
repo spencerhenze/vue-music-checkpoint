@@ -3,32 +3,42 @@
 
         <div class="row">
             <div class="col-xs-12">
-                <h1>MyTunes</h1>
+                <h1 class="myTunes-title">MyTunes</h1>
             </div>
         </div>
 
-        <div class="row">
-
+        <div class="row myTunes-items-wrapper">
             <!--build items here  -->
-            <div class="col-xs-12" v-for="song in myList">
-                <div class="thumbnail my-card-wrapper">
-                    <h3 class="center-text">{{song.artist}}</h3>
-                    <img class="album-artwork" :src="song.albumArt" alt="art">
-                    <div class="info">
-                        <a href="javascript:void(0)" data-toggle="tooltip" title="Preview" @click="aud_play_pause(song.id, song.iconId)"><i :id="song.iconId" class="fa fa-play play-pause-button"></i>
-                            <h5><strong>Title:</strong> {{song.title}}</h5></a>
-                        <h5><strong>Album:</strong> {{song.album}}</h5>
-                        <h5><strong>Price:</strong> {{song.price}}</h5>
-                        <audio :id="song.id" :src="song.preview" type="audio/mpeg"></audio>
-                        <button type="button" @click="removeTrack(song._id)">Remove</button>
-                        <div class="btn btn-group" role="group" aria-label="promote/demote">
+
+            <div class="col-xs-12 thumbnail my-card-wrapper" v-for="song in myList">
+                <div class="row">
+                    <div class="col-xs-12 info-wrapper">
+                        <img class="album-artwork" :src="song.albumArt" alt="art">
+                        <div class="info">
+                            <!-- <a href="javascript:void(0)" data-toggle="tooltip" title="Preview" @click="aud_play_pause(song.id, song.iconId)"><i :id="song.iconId" class="fa fa-play my-play-pause-button"></i>  -->
+                            <h5><strong>Title:</strong> {{song.title}}</h5>
+                            <!-- </a> -->
+                            <h5><strong>Artist: </strong>{{song.artist}}</h5>
+                            <h5><strong>Album:</strong> {{song.album}}</h5>
+                            <h5><strong>Price:</strong> {{song.price}}</h5>
+
+                        </div>
+                        <!-- <button type="button" @click="removeTrack(song._id)">Remove</button> -->
+                        <div class="btn btn-group-vertical" role="group" aria-label="promote/demote">
                             <button type="button" class="btn btn-success" @click="promoteTrack(song.id)"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></button>
                             <button type="button" class="btn btn-danger" @click="demoteTrack(song.id)"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></button>
-                        </div>     
-
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-xs-12 my-action-bar">
+                        <audio controls :id="song.id" :src="song.preview" type="audio/mpeg"></audio>
+                        <i :id="song.iconId" @click="removeTrack(song._id)" class="fa fa-trash remove-song-button"></i>
                     </div>
                 </div>
             </div>
+
 
         </div>
 
@@ -60,10 +70,10 @@
                 console.log("made it to remove track")
                 this.$store.dispatch("removeTrack", songId)
             },
-            promoteTrack: function(trackId){
+            promoteTrack: function (trackId) {
                 this.$store.dispatch("promoteTrack", trackId)
             },
-            demoteTrack: function(trackId) {
+            demoteTrack: function (trackId) {
                 this.$store.dispatch("demoteTrack", trackId)
             },
             checkIcon: function (myAudio, iconId) {
@@ -119,7 +129,6 @@
 
 
 <style>
-
     body {
         background-image: url("//res.cloudinary.com/dvh7zccln/image/upload/v1503611491/dark_texture_utfpwd.jpg");
         background-size: auto;
@@ -162,6 +171,26 @@
 
     .album-artwork {
         min-width: 150px;
+        height: auto;
+    }
+
+    .card-wrapper {
+        background-color: #FFF;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 400px;
+    }
+
+    .myTunes-title {
+        text-align: center;
+        color: white;
+    }
+
+    .myTunes-items-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .my-card-wrapper {
@@ -169,9 +198,45 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: #FFF;
-        height: 400px;
+        background-color: white;
+
+        /* height: 400px; */
+        padding-top: 20px;
+        max-width: 460px;
+        padding:10px;
     }
+
+    .my-action-bar {
+        display: flex;
+        align-items: center;
+    }
+
+    
+
+    .remove-song-button {
+        color: #C9302C;
+        font-size: 2.5rem;
+        margin-left: 30px;
+    }
+
+    .info-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .info {
+        flex-direction: column;
+        margin: 0px 10px 0px 10px;
+    }
+
+    .my-play-pause-button {
+        margin: 2rem 0rem 2rem 0rem;
+        font-size: 3rem;
+        text-align: center;
+        color: #489FDF
+    }
+
 
     .play-pause-button {
         margin: 2rem 0rem 2rem 0rem;

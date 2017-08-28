@@ -14,7 +14,7 @@
                         <h5><strong>Album:</strong> {{song.album}}</h5>
                         <h5><strong>Price:</strong> {{song.price}}</h5>
                         <audio :id="song.jsId" :src="song.preview" type="audio/mpeg"></audio>
-                        <button type="button" @click="addToMyTunes(song)">Add</button>
+                        <i :id="song.iconId" @click="addToMyTunes(song)" class="fa fa-plus-circle add-song-button"></i>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
 
         <div class="row">
 
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" v-for="song in results">
+            <div class="col-xs-12 col-sm-6 col-md-4" v-for="song in results">
                 <div class="thumbnail card-wrapper">
                     <h3 class="center-text">{{song.artist}}</h3>
                     <img class="album-artwork" :src="song.albumArt" alt="art">
@@ -37,7 +37,9 @@
                         <h5><strong>Album:</strong> {{song.album}}</h5>
                         <h5><strong>Price:</strong> {{song.price}}</h5>
                         <audio :id="song.jsId" :src="song.preview" type="audio/mpeg"></audio>
-                        <button type="button" @click="addToMyTunes(song)">Add</button>
+                        <i :id="song.iconId" @click="addToMyTunes(song)" class="fa fa-plus-circle add-song-button"></i>
+                        
+                        <!-- <button type="button" @click="addToMyTunes(song)">Add</button> -->
                     </div>
                 </div>
             </div>
@@ -117,5 +119,12 @@
 </script>
 
 <style>
+    .add-song-button {
+        color: 	#5cb85c;
+        float:right;
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        
+    }
 
 </style>
