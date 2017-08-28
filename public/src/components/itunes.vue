@@ -4,7 +4,7 @@
 
         <div class="row">
 
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" v-for="song in results">
+            <div class="col-xs-12 col-sm-6" v-for="song in results">
                 <div class="thumbnail card-wrapper">
                     <h3 class="center-text">{{song.artist}}</h3>
                     <img class="album-artwork" :src="song.albumArt" alt="art">
@@ -41,7 +41,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
 
     </div>
